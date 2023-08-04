@@ -24,7 +24,9 @@ exports.jobPost = async (req, res, next) => {
 
 exports.viewAllJobPosts = async (req, res, next) => {
   try {
-    const jobPosts = await JobModel.find({}).sort({ createdAt: -1 });
+    const jobPosts = await JobModel.find({ status: "Published" }).sort({
+      createdAt: -1,
+    });
     const allJobData =
       jobPosts.length > 0 ? jobPosts : "Job Post Not Available";
     res.sendResponse(allJobData);
@@ -38,7 +40,7 @@ exports.viewPost = async (req, res, next) => {
 
   try {
     // Find particular Job Post;
-    const job = await JobModel.findOne({ _id: id });
+    const job = await JobModel.findOne({ _id: id, status: "Published" });
 
     if (job) {
       // if any user visit on view page count will be increase
